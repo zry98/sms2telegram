@@ -6,14 +6,17 @@ import android.app.Service
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import androidx.annotation.RequiresApi
+
 
 class MainService : Service() {
 
     companion object {
         private const val logTag = "MainService"
+        lateinit var toastHandler: Handler
     }
 
     override fun onBind(intent: Intent): IBinder? {
@@ -24,16 +27,17 @@ class MainService : Service() {
     override fun onCreate() {
         super.onCreate()
         Log.d(logTag, "onCreate()")
+        toastHandler = Handler()
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Log.d(logTag, "onStartCommand()")
-
         val builder = Notification.Builder(
             this.applicationContext
         )
         val activityIntent = Intent(this, MainActivity::class.java)
+
         builder.setContentIntent(
             PendingIntent.getActivity(this, 0, activityIntent, 0)
         ).setLargeIcon(
@@ -51,6 +55,7 @@ class MainService : Service() {
         )
 
         val notification = builder.build()
+
         startForeground(326, notification)
 
         return super.onStartCommand(intent, flags, startId)

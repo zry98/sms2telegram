@@ -13,30 +13,35 @@ class FilterService : IntentService {
         if (intent == null) {
             return
         }
+        val senderNumber = intent.getStringExtra("senderNumber")!!
+        val receiveDateTime = intent.getStringExtra("receiveDateTime")!!
+        val messageBody = intent.getStringExtra("messageBody")!!
 
-        val senderNumber = intent.getStringExtra("senderNumber")
-        val message = intent.getStringExtra("message")
-        if (!isBlacklisted(senderNumber, message)) {
+        if (!isBlacklisted(senderNumber, messageBody)) {
             val serviceIntent = Intent(this.applicationContext, PushService::class.java)
+
             serviceIntent.putExtra("senderNumber", senderNumber)
-            serviceIntent.putExtra("message", message)
+            serviceIntent.putExtra("receiveDateTime", receiveDateTime)
+            serviceIntent.putExtra("messageBody", messageBody)
             this.startService(serviceIntent)
         }
     }
 
-    private fun isBlacklisted(senderNumber: String?, message: String?): Boolean {
-        if (senderNumber.isNullOrBlank() || message.isNullOrBlank()) {
+    private fun isBlacklisted(senderNumber: String, message: String): Boolean {
+        if (senderNumber.isBlank() || message.isBlank()) {
             return false
         }
         val prefs = Preferences(this)
-
         val blacklistedNumbers = prefs.blacklistedNumbers
+
         if (blacklistedNumbers.isNotEmpty()) {
             if (senderNumber in blacklistedNumbers) {
                 return true
             }
         }
+
         val blacklistedKeywords = prefs.blacklistedKeywords
+
         if (blacklistedKeywords.isNotEmpty()) {
             for (keyword in blacklistedKeywords) {
                 if (keyword in message) {

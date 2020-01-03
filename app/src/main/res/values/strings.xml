@@ -3,6 +3,7 @@
     <string name="appName">SMS2Telegram</string>
     <string name="pushUrlEditTextHint">Push URL</string>
     <string name="setPushUrlButtonText">Set Push URL</string>
+    <string name="setPushUrlToastText">Please set push URL first</string>
     <string name="blacklistedNumbersEditTextHint">Blacklisted Numbers</string>
     <string name="blacklistedKeywordsEditTextHint">Blacklisted Keywords</string>
     <string name="setBlacklistedNumbersButtonText">Set Blacklisted Numbers</string>

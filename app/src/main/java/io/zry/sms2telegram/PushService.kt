@@ -3,6 +3,7 @@ package io.zry.sms2telegram
 import android.app.IntentService
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import okhttp3.*
 import okhttp3.dnsoverhttps.DnsOverHttps
 import org.json.JSONException
@@ -27,6 +28,63 @@ class PushService : IntentService {
     constructor() : super("PushService")
 
     constructor(name: String) : super(name)
+
+    override fun onHandleIntent(intent: Intent?) {
+        if (intent == null) {
+            return
+        }
+        val senderNumber = intent.getStringExtra("senderNumber")!!
+        val receiveDateTime = intent.getStringExtra("receiveDateTime")!!
+        val messageBody = intent.getStringExtra("messageBody")!!
+
+        pushMessage(senderNumber, receiveDateTime, messageBody)
+    }
+
+    private fun pushMessage(senderNumber: String, receiveDateTime: String, messageBody: String) {
+        val jsonData = JSONObject()
+
+        try {
+            val smsData = JSONObject()
+
+            smsData.put("from", senderNumber)
+            smsData.put("datetime", receiveDateTime)
+            smsData.put("text", messageBody)
+            jsonData.put("type", "SMS")
+            jsonData.put("data", smsData)
+        } catch (e: JSONException) {
+            Log.d(logTag, e.toString())
+        }
+
+        val prefs = Preferences(this)
+        val pushUrl = prefs.pushUrl
+
+        if (pushUrl.isNullOrBlank()) {
+            MainService.toastHandler.post(Runnable {
+                Toast.makeText(
+                    this.applicationContext, R.string.setPushUrlToastText, Toast.LENGTH_SHORT
+                ).show()
+            })
+            return
+        }
+
+        val requestBody = RequestBody.create(mimeType, jsonData.toString())
+        val okHttpClient = getOkHttpClient()
+        val request = Request.Builder().url(pushUrl).method("POST", requestBody).build()
+        val call = okHttpClient.newCall(request)
+
+        call.enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                Log.e(logTag, e.toString())
+            }
+
+            @Throws(IOException::class)
+            override fun onResponse(call: Call, response: Response) {
+                assert(response.body() != null)
+                Log.e(logTag, response.body()!!.string())
+            }
+        })
+    }
 
     private fun getOkHttpClient(): OkHttpClient {
         val spec: ConnectionSpec = ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
@@ -94,46 +152,5 @@ class PushService : IntentService {
             e.printStackTrace()
             throw RuntimeException(e)
         }
-    }
-
-    override fun onHandleIntent(intent: Intent?) {
-        if (intent == null) {
-            return
-        }
-        val senderNumber = intent.getStringExtra("senderNumber")
-        val message = intent.getStringExtra("message")
-        pushMessage(senderNumber, message)
-    }
-
-    private fun pushMessage(senderNumber: String?, message: String?) {
-        val json = JSONObject()
-        try {
-            val smsData = JSONObject()
-            smsData.put("from", senderNumber)
-            smsData.put("text", message)
-            json.put("type", "SMS")
-            json.put("data", smsData)
-        } catch (e: JSONException) {
-            Log.d(logTag, e.toString())
-        }
-
-        val prefs = Preferences(this)
-        val pushUrl = prefs.pushUrl!!
-        val requestBody = RequestBody.create(mimeType, json.toString())
-        val okHttpClient = getOkHttpClient()
-        val request = Request.Builder().url(pushUrl).method("POST", requestBody).build()
-        val call = okHttpClient.newCall(request)
-        call.enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-                Log.e(logTag, e.toString())
-            }
-
-            @Throws(IOException::class)
-            override fun onResponse(call: Call, response: Response) {
-                assert(response.body() != null)
-                Log.e(logTag, response.body()!!.string())
-            }
-        })
     }
 }

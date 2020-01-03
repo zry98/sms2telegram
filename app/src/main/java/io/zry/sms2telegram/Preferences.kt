@@ -12,11 +12,11 @@ class Preferences(context: Context) {
         get() = prefs.getString("pushUrl", "")
         set(url) = prefs.edit().putString("pushUrl", url).apply()
 
-    var blacklistedNumbers: MutableSet<String>
-        get() = prefs.getStringSet("blacklistedNumbers", mutableSetOf<String>()) as MutableSet<String>
+    var blacklistedNumbers: Set<String>
+        get() = prefs.getStringSet("blacklistedNumbers", setOf<String>()) as Set<String>
         set(numbers) = prefs.edit().putStringSet("blacklistedNumbers", numbers).apply()
 
-    var blacklistedKeywords: MutableSet<String>
-        get() = prefs.getStringSet("blacklistedKeywords", mutableSetOf<String>()) as MutableSet<String>
+    var blacklistedKeywords: Set<String>
+        get() = prefs.getStringSet("blacklistedKeywords", setOf<String>()) as Set<String>
         set(keywords) = prefs.edit().putStringSet("blacklistedKeywords", keywords).apply()
 }

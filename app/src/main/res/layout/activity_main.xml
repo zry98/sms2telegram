@@ -8,13 +8,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="16dp"
-            android:paddingTop="28dp"
+            android:paddingTop="16dp"
             android:paddingRight="16dp"
-            android:paddingBottom="16dp">
+            android:paddingBottom="16dp"
+            tools:ignore="UselessParent">
         <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -35,7 +39,6 @@
                     android:layout_height="wrap_content"
                     android:onClick="setBlacklistedNumbers"
                     android:text="@string/setBlacklistedNumbersButtonText"
-                    tools:ignore="RtlSymmetry"
             />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -56,7 +59,6 @@
                     android:layout_height="wrap_content"
                     android:onClick="setBlacklistedKeywords"
                     android:text="@string/setBlacklistedKeywordsButtonText"
-                    tools:ignore="RtlSymmetry"
             />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -78,7 +80,6 @@
                     android:layout_height="wrap_content"
                     android:onClick="setPushUrl"
                     android:text="@string/setPushUrlButtonText"
-                    tools:ignore="RtlSymmetry"
             />
 
         </LinearLayout>
