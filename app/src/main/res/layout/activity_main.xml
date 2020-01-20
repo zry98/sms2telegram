@@ -27,7 +27,7 @@
                         android:id="@+id/blacklistedNumbersEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/blacklistedNumbersEditTextHint"
+                        android:hint="@string/blacklisted_numbers_edittext_hint"
                         android:digits="0,1,2,3,4,5,6,7,8,9,+,\n"
                         android:inputType="textMultiLine|phone"
                 />
@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="setBlacklistedNumbers"
-                    android:text="@string/setBlacklistedNumbersButtonText"
+                    android:text="@string/set_blacklisted_numbers_button_text"
             />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -48,7 +48,7 @@
                         android:id="@+id/blacklistedKeywordsEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/blacklistedKeywordsEditTextHint"
+                        android:hint="@string/blacklisted_keywords_edittext_hint"
                         android:inputType="textMultiLine"
                 />
             </com.google.android.material.textfield.TextInputLayout>
@@ -58,28 +58,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="setBlacklistedKeywords"
-                    android:text="@string/setBlacklistedKeywordsButtonText"
+                    android:text="@string/set_blacklisted_keywords_button_text"
             />
 
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 <EditText
-                        android:id="@+id/pushUrlEditText"
+                        android:id="@+id/webhookUrlEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/pushUrlEditTextHint"
+                        android:hint="@string/webhook_url_edittext_hint"
                         android:singleLine="true"
                         android:inputType="textUri"
                 />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                    android:id="@+id/setPushUrlButton"
+                    android:id="@+id/setWebhookUrlButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:onClick="setPushUrl"
-                    android:text="@string/setPushUrlButtonText"
+                    android:onClick="setWebhookUrl"
+                    android:text="@string/set_webhook_url_button_text"
             />
 
         </LinearLayout>

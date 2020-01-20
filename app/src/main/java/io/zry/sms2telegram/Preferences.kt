@@ -8,9 +8,9 @@ class Preferences(context: Context) {
     private val prefs: SharedPreferences =
         context.getSharedPreferences("sms2telegram", Context.MODE_PRIVATE)
 
-    var pushUrl: String?
-        get() = prefs.getString("pushUrl", "")
-        set(url) = prefs.edit().putString("pushUrl", url).apply()
+    var webhookUrl: String?
+        get() = prefs.getString("webhookUrl", "")
+        set(url) = prefs.edit().putString("webhookUrl", url).apply()
 
     var blacklistedNumbers: Set<String>
         get() = prefs.getStringSet("blacklistedNumbers", setOf<String>()) as Set<String>

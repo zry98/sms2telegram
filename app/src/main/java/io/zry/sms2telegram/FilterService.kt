@@ -5,6 +5,11 @@ import android.content.Intent
 
 class FilterService : IntentService {
 
+    companion object {
+        private const val TAG = "FilterService"
+        private lateinit var prefs: Preferences
+    }
+
     constructor() : super("FilterService")
 
     constructor(name: String) : super(name)
@@ -23,15 +28,17 @@ class FilterService : IntentService {
             serviceIntent.putExtra("senderNumber", senderNumber)
             serviceIntent.putExtra("receiveDateTime", receiveDateTime)
             serviceIntent.putExtra("messageBody", messageBody)
+
             this.startService(serviceIntent)
         }
     }
 
     private fun isBlacklisted(senderNumber: String, message: String): Boolean {
         if (senderNumber.isBlank() || message.isBlank()) {
-            return false
+            return true
         }
-        val prefs = Preferences(this)
+        prefs = Preferences(this)
+
         val blacklistedNumbers = prefs.blacklistedNumbers
 
         if (blacklistedNumbers.isNotEmpty()) {

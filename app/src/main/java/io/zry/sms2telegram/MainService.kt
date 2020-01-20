@@ -6,7 +6,6 @@ import android.app.Service
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
-import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -15,24 +14,22 @@ import androidx.annotation.RequiresApi
 class MainService : Service() {
 
     companion object {
-        private const val logTag = "MainService"
-        lateinit var toastHandler: Handler
+        private const val TAG = "MainService"
     }
 
     override fun onBind(intent: Intent): IBinder? {
-        Log.d(logTag, "onBind()")
+        Log.d(TAG, "onBind()")
         throw UnsupportedOperationException("Not yet implemented")
     }
 
     override fun onCreate() {
         super.onCreate()
-        Log.d(logTag, "onCreate()")
-        toastHandler = Handler()
+        Log.d(TAG, "onCreate()")
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        Log.d(logTag, "onStartCommand()")
+        Log.d(TAG, "onStartCommand()")
         val builder = Notification.Builder(
             this.applicationContext
         )

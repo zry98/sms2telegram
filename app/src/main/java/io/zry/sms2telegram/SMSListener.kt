@@ -11,6 +11,7 @@ import java.util.*
 class SMSListener : BroadcastReceiver() {
 
     companion object {
+        private const val TAG = "SMSListener"
         private const val SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED"
     }
 
@@ -37,12 +38,11 @@ class SMSListener : BroadcastReceiver() {
 
     private fun getDateTime(timestamp: Long): String {
         return try {
-            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-            val dateTime = Date(timestamp)
+            val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault())
 
-            sdf.format(dateTime)
+            formatter.format(Date(timestamp))
         } catch (e: Exception) {
-            "Error"
+            "[ERROR]"
         }
     }
 
@@ -52,6 +52,7 @@ class SMSListener : BroadcastReceiver() {
         serviceIntent.putExtra("senderNumber", senderNumber)
         serviceIntent.putExtra("receiveDateTime", receiveDateTime)
         serviceIntent.putExtra("messageBody", messageBody)
+
         context.startService(serviceIntent)
     }
 }
