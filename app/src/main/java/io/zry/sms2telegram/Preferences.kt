@@ -6,7 +6,19 @@ import android.content.SharedPreferences
 class Preferences(context: Context) {
 
     private val prefs: SharedPreferences =
-        context.getSharedPreferences("sms2telegram", Context.MODE_PRIVATE)
+            context.getSharedPreferences("sms2telegram", Context.MODE_PRIVATE)
+
+    var isRawTelegramBotApiRequestMode: Boolean
+        get() = prefs.getBoolean("isRawTelegramBotApiRequestMode", true)
+        set(value) = prefs.edit().putBoolean("isRawTelegramBotApiRequestMode", value).apply()
+
+    var botToken: String?
+        get() = prefs.getString("botToken", "")
+        set(token) = prefs.edit().putString("botToken", token).apply()
+
+    var chatId: String?
+        get() = prefs.getString("chatId", "")
+        set(id) = prefs.edit().putString("chatId", id).apply()
 
     var webhookUrl: String?
         get() = prefs.getString("webhookUrl", "")

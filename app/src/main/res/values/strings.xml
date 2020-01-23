@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SMS2Telegram</string>
-    <string name="webhook_url_edittext_hint">Webhook URL</string>
-    <string name="set_webhook_url_button_text">Set Webhook URL</string>
-    <string name="set_webhook_url_hint_toast_text">Please set webhook URL first</string>
-    <string name="blacklisted_numbers_edittext_hint">Blacklisted Numbers</string>
-    <string name="blacklisted_keywords_edittext_hint">Blacklisted Keywords</string>
-    <string name="set_blacklisted_numbers_button_text">Set Blacklisted Numbers</string>
-    <string name="set_blacklisted_keywords_button_text">Set Blacklisted Keywords</string>
-    <string name="toast_text_successful">Successful</string>
+    <string name="switch_text_raw_telegram_bot_api_request_mode">Raw Telegram Bot API Request Mode</string>
+    <string name="edittext_hint_bot_token">Bot Token</string>
+    <string name="edittext_hint_chat_id">Chat ID</string>
+    <string name="edittext_hint_webhook_url">Webhook URL</string>
+    <string name="edittext_hint_blacklisted_numbers">Blacklisted Numbers</string>
+    <string name="edittext_hint_blacklisted_keywords">Blacklisted Keywords</string>
+    <string name="button_text_save_settings">Save Settings</string>
+    <string name="toast_text_successful_message">Successful</string>
+    <string name="toast_text_set_bot_token">Please set bot token first</string>
+    <string name="toast_text_set_chat_id">Please set chat ID first</string>
+    <string name="toast_text_set_webhook_url">Please set webhook URL first</string>
 </resources>

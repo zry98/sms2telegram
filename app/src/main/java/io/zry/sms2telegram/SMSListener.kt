@@ -18,7 +18,6 @@ class SMSListener : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == SMS_RECEIVED) {
             val bundle = intent.extras
-
             if (bundle != null) {
                 val messages = Telephony.Sms.Intents.getMessagesFromIntent(intent)
                 val messageBody = StringBuilder()
@@ -38,9 +37,8 @@ class SMSListener : BroadcastReceiver() {
 
     private fun getDateTime(timestamp: Long): String {
         return try {
-            val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault())
-
-            formatter.format(Date(timestamp))
+            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault())
+            sdf.format(Date(timestamp))
         } catch (e: Exception) {
             "[ERROR]"
         }

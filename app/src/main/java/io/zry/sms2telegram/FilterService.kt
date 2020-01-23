@@ -40,7 +40,6 @@ class FilterService : IntentService {
         prefs = Preferences(this)
 
         val blacklistedNumbers = prefs.blacklistedNumbers
-
         if (blacklistedNumbers.isNotEmpty()) {
             if (senderNumber in blacklistedNumbers) {
                 return true
@@ -48,7 +47,6 @@ class FilterService : IntentService {
         }
 
         val blacklistedKeywords = prefs.blacklistedKeywords
-
         if (blacklistedKeywords.isNotEmpty()) {
             for (keyword in blacklistedKeywords) {
                 if (keyword in message) {

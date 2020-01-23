@@ -8,10 +8,10 @@ import android.os.Message
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,10 +21,6 @@ class MainActivity : AppCompatActivity() {
         private lateinit var prefs: Preferences
         private lateinit var context: Context
         private val toastHandler: Handler = ToastHandler()
-
-        private lateinit var webhookUrlEditText: EditText
-        private lateinit var blacklistedNumbersEditText: EditText
-        private lateinit var blacklistedKeywordsEditText: EditText
 
         fun makeToast(text: String) {
             Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
@@ -49,78 +45,101 @@ class MainActivity : AppCompatActivity() {
         prefs = Preferences(this)
         context = applicationContext
 
-        webhookUrlEditText = findViewById(R.id.webhookUrlEditText)
-        blacklistedNumbersEditText = findViewById(R.id.blacklistedNumbersEditText)
-        blacklistedKeywordsEditText = findViewById(R.id.blacklistedKeywordsEditText)
+        val isRawTelegramBotApiRequestMode = prefs.isRawTelegramBotApiRequestMode
+        switch_raw_telegram_bot_api_request_mode.isChecked = isRawTelegramBotApiRequestMode
+        rawTelegramBotApiRequestMode(isRawTelegramBotApiRequestMode)
 
-        val webhookUrl = prefs.webhookUrl
+        if (isRawTelegramBotApiRequestMode) {
+            val botToken = prefs.botToken
+            if (botToken.isNullOrBlank()) {
+                edittext_bot_token_or_webhook_url.requestFocus()
+                showToast(resources.getString(R.string.toast_text_set_bot_token))
+            } else {
+                edittext_bot_token_or_webhook_url.setText(botToken)
+            }
 
-        if (webhookUrl.isNullOrBlank()) {
-            webhookUrlEditText.requestFocus()
-            showToast(resources.getString(R.string.set_webhook_url_hint_toast_text))
+            val chatId = prefs.chatId
+            if (chatId.isNullOrBlank()) {
+                edittext_chat_id.requestFocus()
+                showToast(resources.getString(R.string.toast_text_set_chat_id))
+            } else {
+                edittext_chat_id.setText(chatId)
+            }
         } else {
-            webhookUrlEditText.setText(webhookUrl)
+            val webhookUrl = prefs.webhookUrl
+            if (webhookUrl.isNullOrBlank()) {
+                edittext_bot_token_or_webhook_url.requestFocus()
+                showToast(resources.getString(R.string.toast_text_set_webhook_url))
+            } else {
+                edittext_bot_token_or_webhook_url.setText(webhookUrl)
+            }
         }
 
         val blacklistedNumbers = prefs.blacklistedNumbers
-
         if (blacklistedNumbers.isNotEmpty()) {
             val str = blacklistedNumbers.joinToString(separator = "\n")
-            blacklistedNumbersEditText.setText(str)
+            edittext_blacklisted_numbers.setText(str)
         }
 
         val blacklistedKeywords = prefs.blacklistedKeywords
-
         if (blacklistedKeywords.isNotEmpty()) {
             val str = blacklistedKeywords.joinToString(separator = "\n")
-            blacklistedKeywordsEditText.setText(str)
+            edittext_blacklisted_keywords.setText(str)
+        }
+
+        switch_raw_telegram_bot_api_request_mode.setOnCheckedChangeListener { _, isChecked ->
+            prefs.isRawTelegramBotApiRequestMode = isChecked
+            rawTelegramBotApiRequestMode(isChecked)
         }
 
         startService(Intent(baseContext, MainService::class.java))
     }
 
-    fun setWebhookUrl(view: View) {
-        val str = webhookUrlEditText.text.toString()
-
-        if (str.isNotBlank()) {
-            prefs.webhookUrl = str
-            unFocus()
-            showToast(resources.getString(R.string.toast_text_successful))
+    private fun rawTelegramBotApiRequestMode(on: Boolean) {
+        if (on) {
+            edittext_bot_token_or_webhook_url.hint = "Bot Token"
+            edittext_bot_token_or_webhook_url.setText(prefs.botToken)
+            layout_chat_id.visibility = View.VISIBLE
+            edittext_chat_id.setText(prefs.chatId)
+        } else {
+            edittext_bot_token_or_webhook_url.hint = "Webhook URL"
+            edittext_bot_token_or_webhook_url.setText(prefs.webhookUrl)
+            layout_chat_id.visibility = View.GONE
         }
     }
 
-    fun setBlacklistedNumbers(view: View) {
-        val str = blacklistedNumbersEditText.text.toString()
+    fun saveSettings(view: View) {
+        var str = edittext_bot_token_or_webhook_url.text.toString()
+        if (prefs.isRawTelegramBotApiRequestMode) {
+            prefs.botToken = str
+        } else {
+            prefs.webhookUrl = str
+        }
+
+        str = edittext_chat_id.text.toString()
+        prefs.chatId = str
+
+        str = edittext_blacklisted_numbers.text.toString()
         val numbers = if (str.isNotBlank()) {
             str.split("\n").toSet()
         } else {
             emptySet()
         }
-
         prefs.blacklistedNumbers = numbers
-        unFocus()
-        showToast(resources.getString(R.string.toast_text_successful))
-    }
 
-    fun setBlacklistedKeywords(view: View) {
-        val str = blacklistedKeywordsEditText.text.toString()
+        str = edittext_blacklisted_keywords.text.toString()
         val keywords = if (str.isNotBlank()) {
             str.split("\n").toSet()
         } else {
             emptySet()
         }
-
         prefs.blacklistedKeywords = keywords
-        unFocus()
-        showToast(resources.getString(R.string.toast_text_successful))
-    }
 
-    private fun unFocus() {
-        val inputManager: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        val linearLayout = findViewById<View>(R.id.linearLayout)
+        showToast(resources.getString(R.string.toast_text_successful_message))
 
-        inputManager.hideSoftInputFromWindow(currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-        linearLayout.requestFocus()
+        val imeManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imeManager.hideSoftInputFromWindow(currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        main_layout.requestFocus()
     }
 
     class ToastHandler : Handler() {

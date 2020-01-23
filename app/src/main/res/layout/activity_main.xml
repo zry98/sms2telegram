@@ -1,87 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".MainActivity">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
     <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="16dp"
-            android:paddingTop="16dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="16dp"
-            tools:ignore="UselessParent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <LinearLayout
-                android:id="@+id/linearLayout"
+            android:id="@+id/main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <Switch
+                android:id="@+id/switch_raw_telegram_bot_api_request_mode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:focusable="true"
-                android:focusableInTouchMode="true">
+                android:text="@string/switch_text_raw_telegram_bot_api_request_mode" />
 
             <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
                 <EditText
-                        android:id="@+id/blacklistedNumbersEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/blacklisted_numbers_edittext_hint"
-                        android:digits="0,1,2,3,4,5,6,7,8,9,+,\n"
-                        android:inputType="textMultiLine|phone"
-                />
+                    android:id="@+id/edittext_blacklisted_numbers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/edittext_hint_blacklisted_numbers"
+                    android:singleLine="false"
+                    android:inputType="number"
+                    android:digits="0123456789\n"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edittext_blacklisted_keywords"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/edittext_hint_blacklisted_keywords"
+                    android:inputType="textMultiLine" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edittext_bot_token_or_webhook_url"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="textUri" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_chat_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/edittext_chat_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:hint="@string/edittext_hint_chat_id"
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                    android:id="@+id/setBlacklistedNumbersButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="setBlacklistedNumbers"
-                    android:text="@string/set_blacklisted_numbers_button_text"
-            />
-
-            <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                <EditText
-                        android:id="@+id/blacklistedKeywordsEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/blacklisted_keywords_edittext_hint"
-                        android:inputType="textMultiLine"
-                />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                    android:id="@+id/setBlacklistedKeywordsButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="setBlacklistedKeywords"
-                    android:text="@string/set_blacklisted_keywords_button_text"
-            />
-
-            <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                <EditText
-                        android:id="@+id/webhookUrlEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/webhook_url_edittext_hint"
-                        android:singleLine="true"
-                        android:inputType="textUri"
-                />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                    android:id="@+id/setWebhookUrlButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="setWebhookUrl"
-                    android:text="@string/set_webhook_url_button_text"
-            />
-
+                android:id="@+id/button_save_settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_text_save_settings"
+                android:onClick="saveSettings" />
         </LinearLayout>
     </ScrollView>
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
