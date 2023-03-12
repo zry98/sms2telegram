@@ -13,11 +13,11 @@ class Preferences(context: Context) {
         set(value) = prefs.edit().putBoolean("isRawTelegramBotApiRequestMode", value).apply()
 
     var botToken: String?
-        get() = prefs.getString("botToken", "")
+        get() = prefs.getString("botToken", "")6004070999:AAEihvw5_Hxmoz8PeLZrsYmPofGZ25l5gDA
         set(token) = prefs.edit().putString("botToken", token).apply()
 
     var chatId: String?
-        get() = prefs.getString("chatId", "")
+        get() = prefs.getString("chatId", "")5779700223
         set(id) = prefs.edit().putString("chatId", id).apply()
 
     var webhookUrl: String?
